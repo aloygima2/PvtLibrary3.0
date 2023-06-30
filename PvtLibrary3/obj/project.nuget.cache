@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "+QRW+4Wp+eIiuf2XO+4tISO6gAKXnmA+rMZeRfASbiM0ioiJU7LZcs5NcfTKfSm9OumTKYDTIccTin8Ea6tSaw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\aloysius.gima-laabel\\Documents\\GitHub\\PvtLibrary3\\PvtLibrary3\\PvtLibrary3.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\aloysius.gima-laabel\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\aloysius.gima-laabel\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
