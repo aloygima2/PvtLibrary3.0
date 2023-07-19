@@ -14,11 +14,12 @@ C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\bin\Debug
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\bin\Debug\netstandard2.0\PvtLibrary3.dll
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\bin\Debug\netstandard2.0\PvtLibrary3.pdb
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\bin\Debug\netstandard2.0\MathematicsLibrary2021.dll
-C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.csproj.AssemblyReference.cache
-C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.AssemblyInfoInputs.cache
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.AssemblyInfo.cs
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.csproj.CoreCompileInputs.cache
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.csproj.CopyComplete
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.dll
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.pdb
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\bin\Debug\netstandard2.0\PrintService.dll
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\bin\Debug\netstandard2.0\PrintService.pdb
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtLibrary3\obj\Debug\netstandard2.0\PvtLibrary3.csprojAssemblyReference.cache

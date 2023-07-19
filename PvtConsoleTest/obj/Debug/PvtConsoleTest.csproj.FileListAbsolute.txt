@@ -15,8 +15,8 @@ C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\bin\De
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\bin\Debug\PvtLibrary3.dll
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\bin\Debug\MathematicsLibrary2021.dll
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\bin\Debug\PvtLibrary3.pdb
-C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\obj\Debug\PvtConsoleTest.csproj.AssemblyReference.cache
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\obj\Debug\PvtConsoleTest.csproj.CoreCompileInputs.cache
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\obj\Debug\PvtConsoleTest.csproj.CopyComplete
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\obj\Debug\PvtConsoleTest.exe
 C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\obj\Debug\PvtConsoleTest.pdb
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PvtConsoleTest\obj\Debug\PvtConsoleTest.csprojAssemblyReference.cache

@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PrintService\PrintService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="MathematicsLibrary2021">
       <HintPath>..\..\..\..\Documents\SystemAnalysis\Referencing_Libraries\MathematicsLibrary2021.dll</HintPath>
     </Reference>

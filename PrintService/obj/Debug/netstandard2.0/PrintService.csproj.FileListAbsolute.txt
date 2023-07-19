@@ -1,0 +1,9 @@
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\bin\Debug\netstandard2.0\PrintService.deps.json
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\bin\Debug\netstandard2.0\PrintService.dll
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\bin\Debug\netstandard2.0\PrintService.pdb
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\obj\Debug\netstandard2.0\PrintService.AssemblyInfoInputs.cache
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\obj\Debug\netstandard2.0\PrintService.AssemblyInfo.cs
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\obj\Debug\netstandard2.0\PrintService.csproj.CoreCompileInputs.cache
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\obj\Debug\netstandard2.0\PrintService.dll
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\obj\Debug\netstandard2.0\PrintService.pdb
+C:\Users\aloysius.gima-laabel\Documents\GitHub\PvtLibrary3\PrintService\obj\Debug\netstandard2.0\PrintService.csprojAssemblyReference.cache

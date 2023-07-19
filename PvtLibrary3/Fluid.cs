@@ -47,6 +47,7 @@ namespace PvtLibrary3
         double psep;
         double tst = 60;
         double pst = 14.7;
+        double ygAverage;
         bool pbImpurityCorrection = false;
 
         /// <summary>
@@ -58,6 +59,11 @@ namespace PvtLibrary3
         /// Producing condensate/gas ratio in (stb/mmScf)
         /// </summary>
         public double CGR { get; set; }
+
+        /// <summary>
+        ///stock tank condensate oil gravity in unit of API
+        /// </summary>
+        public double condensateGravity { get; set; }
 
         /// <summary>
         /// Gas gravity (air=1).
@@ -76,19 +82,24 @@ namespace PvtLibrary3
         public double Gg3 { get; set; }
 
         /// <summary>
-        /// Composition of Hydrogen Sulphide in %
+        /// Mole composition of Hydrogen Sulphide in %
         /// </summary>
         public double MoleH2S { get => h2smole / 100; set => h2smole = value; }
 
         /// <summary>
-        /// Composition of Carbon dioxide in %
+        /// Mole composition of Carbon dioxide in %
         /// </summary>
         public double MoleCO2 { get => co2mole / 100; set => co2mole = value; }
 
         /// <summary>
-        /// Composition of Nitrogen in %
+        /// Mole composition of Nitrogen in %
         /// </summary>
         public double MoleN2 { get => n2mole / 100; set => n2mole = value; }
+
+        ///// <summary>
+        ///// Bubble point of fluid in psia
+        ///// </summary>
+        //public double Pb { get; set; }
 
         /// <summary>
         /// if set to true, applies a correction factor to the calculated bubble point pressure due to the presence of non-hydrocarbon impurities.
@@ -190,7 +201,7 @@ namespace PvtLibrary3
         /// </summary>
         /// <value>60</value>
         public double Tst { get => tst; set => tst = value; }
-        
+
         /// <summary>
         /// Blackoil correlation
         /// </summary>
@@ -238,6 +249,7 @@ namespace PvtLibrary3
                      SeparatorStage separatorTrain = SeparatorStage.SingleStage) 
         {
             this.Api = API;
+            this.condensateGravity = Api;
             this.GasGravity = gasgrav;
             this.watergrav_sc = watergrav_sc;
             this._GOR = GOR;
@@ -250,6 +262,8 @@ namespace PvtLibrary3
             this.MoleH2S = yH2S;
             this.psep = psep;
             this.SepConfig = separatorTrain;
+            this.ygAverage = Gas.AverageGasGravity(Psp1, Tsp1, condensateGravity, Rs1, Rs2, Rs3,
+                                                 Gg2, Gg3, GasGravity, separatorTrain);
             //this.Tsep = Tsep;
 
             blackoilCorr = BlackOilCorr.Glaso;
@@ -382,20 +396,23 @@ namespace PvtLibrary3
             return this;
         }
                 
-        public FluidProperties LocalGasLiquidProperties(double P, double T, double dia = -99.0)
+        public FluidProperties LocalGasLiquidProperties(double P, double T, double dia = -99.0, 
+                                        double Cp1Bo = 1.0, double Cp2Bo = 0.0, double Cp3Bo = 1.0,
+                                        double Cp4Bo = 0.0, double Cp1Pb = 1.0, double Cp2Pb = 0.0,
+                                        double Cp1Rs = 1.0, double Cp2Rs = 0.0)
         {
             double API = Api;
             double gasgrav = GasGravity;
             double GOR = _GOR;
-            double condensateGravity = API;
             SeparatorStage separatorTrain = SepConfig;
             double yN2 = MoleN2; 
             double yCO2 = MoleCO2;
             double yH2S = MoleH2S;
 
-            var res = BlackOilProperties(P, T, API, gasgrav, condensateGravity, GOR, Psep,
-                                    Tsep, Psp1, Tsp1, Tst, Rs1, Rs2, Rs3, R3, Gg2, Gg3,
-                                    pbImpurityCorrection, separatorTrain, yN2, yCO2, yH2S).ToList();
+            var res = BlackOilProperties(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                    R3, pbImpurityCorrection, separatorTrain, yN2,
+                                    yCO2, yH2S, Cp1Bo, Cp2Bo, Cp3Bo, Cp4Bo, Cp1Pb,
+                                    Cp2Pb, Cp1Rs, Cp2Rs).ToList();
             var Pb = res[0];
             var Rs = res[1];
             var Bo = res[2];
@@ -470,11 +487,7 @@ namespace PvtLibrary3
             double Bg = Gas.BgFromGasLaw(P, T, z);
 
             // water
-            var Bw = Water.Bw_gould(P, T);   // todo: need to check for saturation here,
-                                             // but since pb of water is unavailable
-                                             // I left it this way. It could have been
-                                             // better to apply the compressibility theoretical
-                                             // equation.
+            var Bw = Water.Bw_gould(P, T);  
 
             var Qo = QoSc * Bo * 5.614 / 86400.0;
             var Qw = QwSc * Bw * 5.614 / 86400.0;
@@ -498,7 +511,7 @@ namespace PvtLibrary3
             //double rho_g = Gas.gas_density(p, T, z, gasgravf);
 
             // oil viscosity
-            var mu_o = Oil.OilViscosity(P, T, Pb, Rs, GOR, API, oilViscosityCorr, Tp);
+            var mu_o = Oil.ComputeOilViscosity(P, T, Pb, Rs, GOR, API, oilViscosityCorr, Tp);
             var mu_w = Water.water_viscosity(T);
             double mu_l = Fo * mu_o + Fw * mu_w;
             double Mg = Gas.GasMolecularWeight(gasgravf);
@@ -557,10 +570,10 @@ namespace PvtLibrary3
                 Pb = Pb,
                 Bg = Bg,
                 Bo = Bo,
+                Rs = Rs,
                 Bw = Bw,
                 Co = co,
-                ZFactor = z  
-                
+                ZFactor = z                  
             };
 
             return fl;
@@ -594,57 +607,57 @@ namespace PvtLibrary3
         /// <param name="yH2S"></param>
         /// <returns>IEnumerable containing Pb, Bo, Rs, co</returns>
         public IEnumerable<double> BlackOilProperties(double P, double T, double API,
-                                    double gasgrav, double condensateGravity, double GOR,
-                                    double Psep, double Tsep, double Psp1, double Tsp1,
-                                    double Tst, double Rs1, double Rs2, double Rs3, double R3,
-                                    double Gg2, double Gg3, bool pbImpurityCorrection,
-                                    SeparatorStage separatorTrain, double yN2 = 0.0,
-                                    double yCO2 = 0.0, double yH2S = 0.0)
+                                double gasgrav,double GOR, double Psep, double Tsep, 
+                                double Tst, double R3, bool pbImpurityCorrection,
+                                SeparatorStage separatorTrain, double yN2 = 0.0,
+                                double yCO2 = 0.0, double yH2S = 0.0, double Cp1Bo = 1.0,
+                                double Cp2Bo = 0.0, double Cp3Bo = 1.0, double Cp4Bo = 0.0,
+                                double Cp1Pb = 1.0, double Cp2Pb = 0.0, double Cp1Rs = 1.0,
+                                double Cp2Rs = 0.0)
         {
             var blackoil = blackoilCorr;
-            if (blackoil == BlackOilCorr.AlMarhoun)
+            if (blackoil == BlackOilCorr.Glaso)
             {
-                return Oil.BlackOilAlMarhoun(P, T, API, gasgrav, API, GOR, Psep, Tsep, Psp1,
-                                    Tsp1, Tst, Rs1, Rs2, Rs3, Gg2, Gg3, pbImpurityCorrection,
-                                    separatorTrain, yN2, yCO2, yH2S);
-            }
-            else if (blackoil == BlackOilCorr.DeGhetto)
-            {
-                return Oil.BlackOilDeGhetto(P, T, API, gasgrav, GOR, Psep, Tsep, Psp1,
-                                Tsp1, Rs1, Rs2, Rs3, R3, Gg2, Gg3, pbImpurityCorrection, 
-                                separatorTrain, yN2);
-            }
-            else if (blackoil == BlackOilCorr.Glaso)
-            {
-                return Oil.BlackOilGlaso(P, T, API, gasgrav, condensateGravity, GOR, Psep,
-                                        Tsep, Psp1, Tsp1, Tst, Rs1, Rs2, Rs3, Gg2, Gg3,
-                                        pbImpurityCorrection, separatorTrain, yN2, yCO2, yH2S);
-            }
-            else if (blackoil == BlackOilCorr.Lasater)
-            {
-                return Oil.BlackOilLasater(P, T, API, gasgrav, API, GOR, Psep, Tsep, Psp1, 
-                                    Tsp1, Tst, Rs1, Rs2, Rs3, Gg2, Gg3, pbImpurityCorrection,
-                                    separatorTrain, yN2, yCO2, yH2S);
-            }
-            else if (blackoil == BlackOilCorr.Petrosky)
-            {
-                return Oil.BlackOilPetrosky(P, T, API, gasgrav, API, GOR, Psep, Tsep, Psp1, 
-                                    Tsp1, Tst, Rs1, Rs2, Rs3, Gg2, Gg3, pbImpurityCorrection, 
-                                    separatorTrain, yN2, yCO2, yH2S);
+                return Oil.BlackOilGlaso(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                    pbImpurityCorrection, ygAverage, yN2, yCO2, yH2S,
+                                    Cp1Bo, Cp2Bo, Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
             }
             else if (blackoil == BlackOilCorr.Standing)
             {
-                return Oil.BlackOilStanding(P, T, API, gasgrav, API, GOR, Psep, Tsep, Psp1, 
-                                    Tsp1, Tst, Rs1, Rs2, Rs3, Gg2, Gg3, pbImpurityCorrection,
-                                    separatorTrain, yN2, yCO2, yH2S);
+                return Oil.BlackOilStanding(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                        pbImpurityCorrection, ygAverage, yN2, Cp1Bo, Cp2Bo,
+                                        Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
             }
             else if (blackoil == BlackOilCorr.VazquezBeggs)
             {
-                return Oil.BlackOilVazquezBeggs(P, T, API, gasgrav, API, GOR, Psep, Tsep, 
-                                        Psp1, Tsp1, Tst, Rs1, Rs2, Rs3, Gg2, Gg3, 
-                                        pbImpurityCorrection, separatorTrain, 
-                                        yN2, yCO2, yH2S);
-            }            
+                return Oil.BlackOilVazquezBeggs(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                    pbImpurityCorrection, ygAverage, yN2, Cp1Bo, Cp2Bo, 
+                                    Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
+            }
+            else if (blackoil == BlackOilCorr.Lasater)
+            {
+                return Oil.BlackOilLasater(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                    pbImpurityCorrection, ygAverage, yN2, Cp1Bo, Cp2Bo,
+                                    Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
+            }
+            else if (blackoil == BlackOilCorr.Petrosky)
+            {
+                return Oil.BlackOilPetrosky(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                    pbImpurityCorrection, ygAverage, yN2, Cp1Bo, Cp2Bo,
+                                    Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
+            }
+            else if (blackoil == BlackOilCorr.AlMarhoun)
+            {
+                return Oil.BlackOilAlMarhoun(P, T, API, gasgrav, GOR, Psep, Tsep, Tst, 
+                                    pbImpurityCorrection, ygAverage, yN2, Cp1Bo, Cp2Bo, 
+                                    Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
+            }
+            else if (blackoil == BlackOilCorr.DeGhetto)
+            {
+                return Oil.BlackOilDeGhetto(P, T, API, gasgrav, GOR, Psep, Tsep, R3,
+                                ygAverage, pbImpurityCorrection, separatorTrain, yN2, 
+                                Cp1Bo, Cp2Bo, Cp3Bo, Cp4Bo, Cp1Pb, Cp2Pb, Cp1Rs, Cp2Rs);
+            }                     
             else
             {
                 throw new Exception($"Unknown blackoil correlation {blackoil}");

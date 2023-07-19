@@ -31,10 +31,10 @@ namespace PvtConsoleTest
 
             //var pvt = fluid.LocalGasLiquidProperties(3673 + 14.7, 181);
             var pvt = fluid.LocalGasLiquidProperties(100, 100);
-            double[] pvtResults = new double[] { pvt.Pb, pvt.Bo, pvt.rhoO, pvt.muO, pvt.Co,
+            double[] pvtResults = new double[] { pvt.Pb, pvt.Bo, pvt.Rs, pvt.rhoO, pvt.muO, pvt.Co,
                                                  pvt.rhoG, pvt.muG, pvt.Bg, pvt.ZFactor,
                                                  pvt.rhoW, pvt.muW, pvt.Bw };
-            string[] headings = new string[] { "Pb", "Bo", "rhoO",
+            string[] headings = new string[] { "Pb", "Bo", "Rs", "rhoO",
                                                 "muO", "Co", "rhoG", "muG", "Bg", 
                                                 "Zfactor", "rhoW", "muW", "Bw" };
             for (int i = 0; i < pvtResults.Length; i++)

@@ -54,6 +54,11 @@ namespace PvtLibrary3.Common
         VazquezBeggs
     }
 
+    public enum GasViscosityCorr
+    {
+        GasViscosityLee
+    }
+
     /// <summary>
     /// Choice of Oil viscosity correlation
     /// </summary>

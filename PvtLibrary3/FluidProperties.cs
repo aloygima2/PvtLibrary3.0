@@ -58,6 +58,8 @@ namespace PvtLibrary3
         /// </summary>
         public double Pb { get; set; }
 
+        public double Pressure { get; set; }
+
         /// <summary>
         /// Gas rate, in Scf/Day
         /// </summary>
@@ -98,6 +100,8 @@ namespace PvtLibrary3
         /// </summary>
         public double sigmaL { get; set; }
 
+        public double Rs { get; set; }
+
         /// <summary>
         /// Surface tension of oil, in dynes/cm
         /// </summary>
@@ -107,6 +111,8 @@ namespace PvtLibrary3
         /// Surface tension of water, dynes/cm
         /// </summary>
         public double sigmaW { get; set; }
+
+        public double Temperature { get; set; }
 
         /// <summary>
         /// Gas superficial velocity, ft/sec
